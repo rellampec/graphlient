@@ -39,6 +39,13 @@ module Graphlient
       query_str.strip
     end
 
+    # Appends a named fragment spread (`...fragment_name`) to the query string.
+    # Use instead of the deprecated `___Const` convention.
+    def spread(fragment_name)
+      @query_str << "\n#{indent}...#{fragment_name}"
+      @query_str << "\n#{indent}"
+    end
+
     private
 
     def evaluate(&block)

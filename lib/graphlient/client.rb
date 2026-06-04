@@ -20,6 +20,12 @@ module Graphlient
       raise Graphlient::Errors::ClientError, e.message
     end
 
+    def to_query_string(**_kargs, &block)
+      Graphlient::Query.new do
+        instance_eval(&block)
+      end.to_s
+    end
+
     def execute(query, variables = nil)
       query_params = {}
       query_params[:context] = @options if @options
