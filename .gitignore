@@ -12,6 +12,10 @@
 .byebug_history
 .history/
 .DS_Store
+.solargraph.yml
+.vscode/
+.idea/
+
 # Used by dotenv library to load environment variables.
 # .env
 
