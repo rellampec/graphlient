@@ -145,8 +145,13 @@ describe Graphlient::Adapters::HTTP::FaradayAdapter do
     end
 
     specify do
-      expected_error_message = "Connection refused - #{error_message}"
-      expect { client.schema }.to raise_error(Graphlient::Errors::ConnectionFailedError, expected_error_message)
+      # Use a regex so the test passes on both Linux ("Connection refused - ...")
+      # and Windows (where Errno::ECONNREFUSED prepends a different OS message).
+      # Both platforms include the core error_message string in the result.
+      expect { client.schema }.to raise_error(
+        Graphlient::Errors::ConnectionFailedError,
+        /#{Regexp.escape(error_message)}/
+      )
     end
   end
 
