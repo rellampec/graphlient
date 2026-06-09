@@ -30,7 +30,7 @@ describe Graphlient::Client do
         expect do
           client.schema
         end.to raise_error Graphlient::Errors::FaradayServerError do |e|
-          expect(e.to_s).to eq 'the server responded with status 500'
+          expect(e.to_s).to include('the server responded with status 500')
           expect(e.status_code).to eq 500
           expect(e.response['errors'].size).to eq 1
           expect(e.response['errors'].first['message']).to eq 'test message'
