@@ -5,6 +5,7 @@ describe Graphlient::Client do
     module Graphlient::Client::Spec
       Client = Graphlient::Client.new(
         'http://graph.biz/graphql',
+        schema_path: 'spec/support/fixtures/invoice_api.json',
         headers: { 'Authorization' => 'Bearer 1231' },
         allow_dynamic_queries: false
       ) do |client|

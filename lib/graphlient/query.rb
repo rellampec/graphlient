@@ -1,5 +1,5 @@
 module Graphlient
-  class Query
+  class Query # rubocop:disable Metrics/ClassLength
     SCALAR_TYPES = {
       int: 'Int',
       float: 'Float',

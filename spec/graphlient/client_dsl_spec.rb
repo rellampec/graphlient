@@ -83,10 +83,10 @@ describe Graphlient::Client do
       it 'supports multiple spreads at the same level' do
         result = client.to_query_string do
           query do
-            nodes {
+            nodes do
               spread :FragmentA
               spread :FragmentB
-            }
+            end
           end
         end
         expect(result).to include('...FragmentA')

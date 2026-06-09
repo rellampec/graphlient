@@ -5,7 +5,8 @@ require 'rspec'
 require 'graphlient'
 begin
   require 'byebug' if RUBY_ENGINE != 'jruby'
-rescue LoadError # byebug not available on all platforms (e.g. Windows x64-mingw-ucrt)
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+  # byebug not available on all platforms (e.g. Windows x64-mingw-ucrt)
 end
 require 'rack/test'
 require 'webmock/rspec'
