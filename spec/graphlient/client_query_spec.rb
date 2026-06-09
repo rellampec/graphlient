@@ -94,16 +94,11 @@ describe Graphlient::Client do
       end
 
       context 'with directive' do
-        # Directive DSL (_skip, _include etc.) is not yet implemented.
-        # This spec defines the intended behaviour and will be enabled
-        # once feeInCents _skip(if: :skip_fee) → @skip(if: $skip_fee)
-        # translation is added to Graphlient::Query.
         let(:query) do
-          pending 'directive DSL not yet implemented'
           client.parse do
             query(
               some_id:  :int,
-              skip_fee: :boolean
+              skip_fee: :boolean!
             ) do
               invoice(id: :some_id) do
                 id
@@ -114,7 +109,7 @@ describe Graphlient::Client do
         end
 
         it '#execute' do
-          response = client.execute(query, some_id: 42)
+          response = client.execute(query, some_id: 42, skip_fee: true)
           invoice = response.data.invoice
           expect(invoice.id).to eq '42'
           expect(invoice.fee_in_cents).to eq nil

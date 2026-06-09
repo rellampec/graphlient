@@ -59,6 +59,17 @@ module Graphlient
       @http ||= http_adapter_class.new(@url, adapter_options, &block)
     end
 
+    # Register a custom scalar type for use in variable declarations.
+    # Call inside the client initialiser block:
+    #   client = Graphlient::Client.new(url) do |c|
+    #     c.scalar :date,    'Date'
+    #     c.scalar :uuid,    'UUID'
+    #     c.scalar :decimal, 'Decimal'
+    #   end
+    def scalar(sym, graphql_type)
+      Query.scalar(sym, graphql_type)
+    end
+
     def schema
       @schema ||= options[:schema] || Graphlient::Schema.new(http, schema_path)
     end
