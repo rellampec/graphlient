@@ -92,6 +92,29 @@ describe Graphlient::Client do
         invoice = response.data.invoice
         expect(invoice).to be_nil
       end
+
+      context 'with directive' do
+        let(:query) do
+          client.parse do
+            query(
+              some_id:  :int,
+              skip_fee: :boolean
+            ) do
+              invoice(id: :some_id) do
+                id
+                feeInCents _skip(if: :skip_fee)
+              end
+            end
+          end
+        end
+
+        it '#execute' do
+          response = client.execute(query, some_id: 42)
+          invoice = response.data.invoice
+          expect(invoice.id).to eq '42'
+          expect(invoice.fee_in_cents).to eq nil
+        end
+      end
     end
 
     context 'parameterized GRAPHQL query' do
