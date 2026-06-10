@@ -2,10 +2,10 @@
 * Your contribution here.
 * [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
 * [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
-* `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
     DSL block and returns a `String` without touching the schema or Faraday HTTP adapter.
     Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
-* `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named
     fragment spread. Alternative to the `___Const` convention for use cases where
     `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
 * Directive DSL (`_name` convention): any method starting with `_` followed by a lowercase
@@ -28,7 +28,7 @@
 * CI: added Ruby 3.4 to the required test matrix; fixed Ruby 3.1 compatibility via
     WebMock `stub_request.to_rack`; fixed Ruby 3.4 `mutex_m` dependency
     - [@rellampec](https://github.com/rellampec).
-* `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms
     where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 
 ### 0.8.0 (2024/01/06)
