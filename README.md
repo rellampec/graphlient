@@ -563,6 +563,10 @@ client.query(some_id: :int, skip_fee: :boolean!) do
     invoice(id: :some_id) do
       id
       feeInCents _skip(if: :skip_fee)   # → feeInCents @skip(if: $skip_fee)
+    end
+  end
+end
+```
 
 **On a fragment spread:**
 
