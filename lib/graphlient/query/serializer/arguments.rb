@@ -9,7 +9,7 @@ module Graphlient
         end
 
         # Translate a DSL variable type symbol to its GraphQL type string.
-        # :id/:id! → ID/ID!   :int → Int   :date → Date (if registered)   [:int] → [Int]
+        # :id/:id! -> ID/ID!   :int -> Int   :date -> Date (if registered)   [:int] -> [Int]
         def variable_string(val)
           case val
           when :id, :id!

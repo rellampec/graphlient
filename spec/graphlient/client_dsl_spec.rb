@@ -121,7 +121,10 @@ describe Graphlient::Client do
 
     it 'builds a query with an inline fragment definition' do
       result = client.to_query_string do
-        fragment(:InvoiceFields, on: :Invoice) { id; feeInCents }
+        fragment(:InvoiceFields, on: :Invoice) do
+          id
+          feeInCents
+        end
         query { invoice(id: 10) { spread :InvoiceFields } }
       end
       expect(result).to include('...InvoiceFields')

@@ -26,7 +26,7 @@ module Graphlient
           #   end
           #
           # After registration, use the symbol in variable declarations:
-          #   query(created_after: :date) { ... }  # → query($createdAfter: Date)
+          #   query(created_after: :date) { ... }  # -> query($createdAfter: Date)
           def scalar(sym, graphql_type)
             custom_scalar_types[sym.to_sym] = graphql_type.to_s
           end

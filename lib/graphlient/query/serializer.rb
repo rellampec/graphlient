@@ -44,7 +44,7 @@ module Graphlient
 
       # Named fragment spread: ...FragmentName [@directive ...]
       #   spread :InvoiceFields
-      #   spread :InvoiceFields, _skip(if: :x)   # → ...InvoiceFields @skip(if: $x)
+      #   spread :InvoiceFields, _skip(if: :x)   # -> ...InvoiceFields @skip(if: $x)
       def spread(fragment_name, *args)
         directives = args.select { |a| a.is_a?(Directive) }
         @query_str << "\n#{indent}...#{fragment_name}"
@@ -69,14 +69,14 @@ module Graphlient
         @query_str << "\n#{indent}"
       end
 
-      # Inline fragment definition — collected and appended after the main query.
+      # Inline fragment definition -- collected and appended after the main query.
       #   fragment(:InvoiceFields, on: :Invoice) { id; fee_in_cents }
       def fragment(name, on:, &block)
         body = self.class.new(&block).query_str.strip
         @fragments[name] = "fragment #{name} on #{on} {\n#{body}\n}"
       end
 
-      def method_missing(method_name, *args, &block)
+      def method_missing(method_name, *args, &block) # rubocop:disable Style/MethodMissingSuper
         if fragment?(method_name)
           append_node("...#{resolve_fragment_constant(method_name)}".to_sym, args, &block)
         elsif directive?(method_name)
@@ -96,7 +96,7 @@ module Graphlient
         '  ' * @indents
       end
 
-      def append_node(node, args, arg_processor: nil, &block) # rubocop:disable Metrics/MethodLength
+      def append_node(node, args, arg_processor: nil, &block)
         regular = field_args(args)
         dirs    = directive_args(args)
 

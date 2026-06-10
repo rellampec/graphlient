@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # Specs for DSL extensions: directives, inline fragments, fragment definitions,
 # spread + directive, and custom scalar registration.
-# These operate on the Query string builder only — no HTTP or schema access.
+# These operate on the Query string builder only -- no HTTP or schema access.
 
 RSpec.describe Graphlient::Query do
   def build(&block)
@@ -168,7 +168,10 @@ RSpec.describe Graphlient::Query do
       result = build do
         fragment(:FragA, on: :TypeA) { field_a }
         fragment(:FragB, on: :TypeB) { field_b }
-        query { spread :FragA; spread :FragB }
+        query do
+          spread :FragA
+          spread :FragB
+        end
       end
       expect(result).to include('fragment FragA on TypeA')
       expect(result).to include('fragment FragB on TypeB')
@@ -186,7 +189,7 @@ RSpec.describe Graphlient::Query do
           invoices(created_after: :created_after) { id }
         end
       end
-      # Variable names are not camelized — snake_case keys output as-is
+      # Variable names are not camelized -- snake_case keys output as-is
       expect(result).to include('$created_after: Date')
     end
 
