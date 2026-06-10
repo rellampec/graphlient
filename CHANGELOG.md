@@ -2,9 +2,14 @@
 * Your contribution here.
 * [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
 * [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: serializes a DSL block to a `String` without schema loading or HTTP — enables DSL-only mode and external HTTP dispatch - [@rellampec](https://github.com/rellampec).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` in the query string — cleaner alternative to the `___Const` triple-underscore convention - [@rellampec](https://github.com/rellampec).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require for platforms where byebug is unavailable (e.g. Windows Ruby 3.2) - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
+    DSL block and returns a `String` without touching the schema or Faraday HTTP adapter.
+    Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named
+    fragment spread. Alternative to the `___Const` convention for use cases where
+    `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms
+    where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): Directive DSL — `_skip(if: :x)` → `@skip(if: $x)`, `_include(if: :x)` → `@include(if: $x)`. Any `_name` method is treated as a `@name` directive; applies to fields, spreads, and inline fragments - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): `on(:TypeName, *directives, &block)`: inline fragment DSL — `on(:PaidInvoice) { amountPaid }` → `... on PaidInvoice { amountPaid }` - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): `fragment(:Name, on: :Type, &block)`: inline fragment definition appended to the query document automatically; scoped to the query call, no global registry - [@rellampec](https://github.com/rellampec).
