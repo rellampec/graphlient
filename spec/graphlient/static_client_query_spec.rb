@@ -4,7 +4,7 @@ describe Graphlient::Client do
   describe 'parse and execute' do
     module Graphlient::Client::Spec
       # schema_path avoids an HTTP schema fetch at file-load time.
-      # No Rack adapter needed here — parsing is local; execution is handled
+      # No Rack adapter needed here; parsing is local and execution is handled
       # by the stub_request below.
       Client = Graphlient::Client.new(
         'http://graph.biz/graphql',
