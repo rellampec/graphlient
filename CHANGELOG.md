@@ -3,33 +3,33 @@
 * [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
 * [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
 * `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
-  DSL block and returns a `String` without touching the schema or Faraday HTTP adapter.
-  Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
+    DSL block and returns a `String` without touching the schema or Faraday HTTP adapter.
+    Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
 * `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named
-  fragment spread. Alternative to the `___Const` convention for use cases where
-  `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
+    fragment spread. Alternative to the `___Const` convention for use cases where
+    `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
 * Directive DSL (`_name` convention): any method starting with `_` followed by a lowercase
-  letter is treated as a GraphQL directive — `_skip(if: :x)` → `@skip(if: $x)`,
-  `_include(if: :x)` → `@include(if: $x)`, custom directives supported. Directives can be
-  applied to fields, fragment spreads, and inline fragments - [@rellampec](https://github.com/rellampec).
+    letter is treated as a GraphQL directive — `_skip(if: :x)` → `@skip(if: $x)`,
+    `_include(if: :x)` → `@include(if: $x)`, custom directives supported. Directives can be
+    applied to fields, fragment spreads, and inline fragments - [@rellampec](https://github.com/rellampec).
 * `on(:TypeName, *directives, &block)`: inline fragment DSL — `on(:PaidInvoice) { amountPaid }`
-  → `... on PaidInvoice { amountPaid }`. Accepts directive arguments the same way as fields
-  - [@rellampec](https://github.com/rellampec).
+    → `... on PaidInvoice { amountPaid }`. Accepts directive arguments the same way as fields
+    - [@rellampec](https://github.com/rellampec).
 * `fragment(:Name, on: :Type, &block)`: inline fragment definition — defines a named fragment
-  body using the same DSL and appends it to the query document automatically. Fragments are
-  scoped to the query call; no global registry - [@rellampec](https://github.com/rellampec).
+    body using the same DSL and appends it to the query document automatically. Fragments are
+    scoped to the query call; no global registry - [@rellampec](https://github.com/rellampec).
 * Custom scalar registration: `client = Graphlient::Client.new(url) { |c| c.scalar :date, 'Date' }`
-  — registers additional scalar types for use in variable declarations (`:date` → `Date`,
-  `:uuid` → `UUID`, etc.) alongside the built-in `:int`, `:float`, `:string`, `:boolean`
-  - [@rellampec](https://github.com/rellampec).
+    — registers additional scalar types for use in variable declarations (`:date` → `Date`,
+    `:uuid` → `UUID`, etc.) alongside the built-in `:int`, `:float`, `:string`, `:boolean`
+    - [@rellampec](https://github.com/rellampec).
 * `Query` refactored into `Query::Serializer` composed from focused concern modules
-  (`Scalars`, `Arguments`, `Evaluator`, `Fragments`, `Directives`). Public API unchanged
-  - [@rellampec](https://github.com/rellampec).
+    (`Scalars`, `Arguments`, `Evaluator`, `Fragments`, `Directives`). Public API unchanged
+    - [@rellampec](https://github.com/rellampec).
 * CI: added Ruby 3.4 to the required test matrix; fixed Ruby 3.1 compatibility via
-  WebMock `stub_request.to_rack`; fixed Ruby 3.4 `mutex_m` dependency
-  - [@rellampec](https://github.com/rellampec).
+    WebMock `stub_request.to_rack`; fixed Ruby 3.4 `mutex_m` dependency
+    - [@rellampec](https://github.com/rellampec).
 * `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms
-  where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
+    where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 
 ### 0.8.0 (2024/01/06)
 * [#110](https://github.com/ashkan18/graphlient/pull/110): Ensure correct Faraday JSON response body parsing with invalid response header - [@taylorthurlow](https://github.com/taylorthurlow).
