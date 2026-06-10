@@ -6,6 +6,7 @@ gem 'rake'
 
 group :development, :test do
   gem 'activesupport', '< 6'
+  gem 'mutex_m' # activesupport 5.x depends on mutex_m, removed from stdlib in Ruby 3.4
 end
 
 group :development do

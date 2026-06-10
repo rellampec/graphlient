@@ -14,6 +14,7 @@ A friendlier Ruby client for consuming GraphQL-based APIs. Built on top of your 
   - [Error Handling](#error-handling)
   - [Executing Parameterized Queries and Mutations](#executing-parameterized-queries-and-mutations)
   - [Parse and Execute Queries Separately](#parse-and-execute-queries-separately)
+  - [Build Query Strings without Validation](#build-query-strings-without-validation)
   - [Dynamic vs. Static Queries](#dynamic-vs-static-queries)
   - [Generate Queries with Graphlient::Query](#generate-queries-with-graphlientquery)
   - [Fragment Spreads and Definitions in the DSL](#fragment-spreads-and-definitions-in-the-dsl)
@@ -282,6 +283,53 @@ GRAPHQL
 client.execute query, ids: [42]
 ```
 
+### Build Query Strings without Validation
+
+`Client#to_query_string` serializes a DSL block into a GraphQL query string and
+returns it as a plain `String`. It uses the same DSL serializer (`Graphlient::Query`)
+that powers `client.query` and `client.parse`, but it stops there — no schema is
+loaded, no graphql-client validation runs, no HTTP call is made.
+
+```ruby
+client = Graphlient::Client.new('https://example.com/graphql',
+  headers: { 'Authorization' => 'Bearer 123' }
+)
+
+query_str = client.to_query_string do
+  query(id: :int) do
+    invoice(id: :id) do
+      id
+      feeInCents
+    end
+  end
+end
+
+# => "query($id: Int){\n  invoice(id: $id){\n    id\n    feeInCents\n    }\n  }"
+```
+
+For fragment-free queries the string can be fed back to `client.execute`:
+
+```ruby
+client.execute(query_str, id: 42)
+```
+
+Queries containing fragment spreads (`spread :Name` → `...Name`) cannot go back
+through the gem — graphql-client requires fragments to be pre-registered module
+constants, not named strings. Pass those directly to your own HTTP client instead.
+
+This is also the escape hatch if you want to replace the graphql-client dependency
+entirely. `to_query_string` gives you a standard GraphQL document — from there you
+own the transport: Faraday, Net::HTTP, anything else. You get full control over
+headers, retries, connection pooling, and middleware without any graphql-client
+overhead.
+
+```ruby
+conn = Faraday.new('https://example.com/graphql',
+  headers: { 'Authorization' => 'Bearer 123', 'Content-Type' => 'application/json' }
+)
+response = conn.post('/', { query: query_str, variables: { id: 42 } }.to_json)
+```
+
 ### Dynamic vs. Static Queries
 
 Graphlient uses [graphql-client](https://github.com/github-community-projects/graphql-client), which [recommends](https://github.com/github-community-projects/graphql-client/blob/master/guides/dynamic-query-error.md) building queries as static module members along with dynamic variables during execution. This can be accomplished with graphlient the same way.
@@ -515,10 +563,6 @@ client.query(some_id: :int, skip_fee: :boolean!) do
     invoice(id: :some_id) do
       id
       feeInCents _skip(if: :skip_fee)   # → feeInCents @skip(if: $skip_fee)
-    end
-  end
-end
-```
 
 **On a fragment spread:**
 
