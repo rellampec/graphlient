@@ -12,6 +12,9 @@
 * [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 * [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
 * [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the DSL block and returns a `String` without touching the schema or Faraday HTTP adapter. Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named fragment spread. Alternative to the `___Const` convention for use cases where `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 
 ### 0.8.0 (2024/01/06)
 * [#110](https://github.com/ashkan18/graphlient/pull/110): Ensure correct Faraday JSON response body parsing with invalid response header - [@taylorthurlow](https://github.com/taylorthurlow).
