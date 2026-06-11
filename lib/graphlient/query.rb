@@ -1,5 +1,5 @@
 module Graphlient
-  class Query # rubocop:disable Metrics/ClassLength
+  class Query
     SCALAR_TYPES = {
       int: 'Int',
       float: 'Float',
@@ -56,6 +56,7 @@ module Graphlient
 
     def resolve_fragment_constant(value)
       return nil unless (match = value.to_s.match(FRAGMENT_DEFITION))
+
       raw_const = match[:const].gsub('__', '::')
       @context[@last_block].eval(raw_const).tap do |const|
         msg = "Expected constant #{raw_const} to be GraphQL::Client::FragmentDefinition. Given #{const.class}"

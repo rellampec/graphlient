@@ -1,8 +1,8 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   TargetRubyVersion: 2.3
-
-Lint/SplatKeywordArguments:
-  Enabled: false
+  NewCops: disable
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -13,7 +13,7 @@ Style/Documentation:
 Style/SafeNavigation:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -24,5 +24,3 @@ Metrics/BlockLength:
 
 Metrics/AbcSize:
   Enabled: false
-
-inherit_from: .rubocop_todo.yml
