@@ -1,5 +1,6 @@
 ### (Next)
 * Your contribution here.
+* [#117](https://github.com/ashkan18/graphlient/pull/117): Migrate Danger to use `danger-pr-comment` reusable workflow, add Ruby 4.0 to CI, fix tests on Ruby 3.4+ and 4.0 - [@dblock](https://github.com/dblock).
 * [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
 * [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
 * [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
