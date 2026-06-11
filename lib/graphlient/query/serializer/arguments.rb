@@ -52,11 +52,14 @@ module Graphlient
           when Numeric then value.to_s
           when Array   then "[#{value.map { |v| argument_value_string(v) }.join(', ')}]"
           when Hash    then "{ #{value.map { |k, v| "#{k}: #{argument_value_string(v)}" }.join(', ')} }"
-          when Symbol
-            @variables.respond_to?(:key?) && @variables.key?(value) ? "$#{value}" : value.to_s.camelize(:lower)
+          when Symbol  then symbol_argument_value(value)
           else
             value
           end
+        end
+
+        def symbol_argument_value(value)
+          @variables.respond_to?(:key?) && @variables.key?(value) ? "$#{value}" : value.to_s.camelize(:lower)
         end
       end
     end

@@ -3,7 +3,7 @@ module Graphlient
     class Serializer
       module Fragments
         # Pattern for the legacy ___Const::Name triple-underscore convention.
-        FRAGMENT_DEFINITION = /___(?<const>[A-Z][a-zA-Z0-9_]*(__[A-Z][a-zA-Z0-9_]*)*)/
+        FRAGMENT_DEFINITION = /___(?<const>[A-Z][a-zA-Z0-9_]*(?:__[A-Z][a-zA-Z0-9_]*)*)/.freeze
 
         private
 

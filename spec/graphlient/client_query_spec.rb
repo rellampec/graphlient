@@ -97,7 +97,7 @@ describe Graphlient::Client do
         let(:query) do
           client.parse do
             query(
-              some_id:  :int,
+              some_id: :int,
               skip_fee: :boolean!
             ) do
               invoice(id: :some_id) do

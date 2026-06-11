@@ -76,7 +76,7 @@ module Graphlient
         @fragments[name] = "fragment #{name} on #{on} {\n#{body}\n}"
       end
 
-      def method_missing(method_name, *args, &block) # rubocop:disable Style/MethodMissingSuper
+      def method_missing(method_name, *args, &block)
         if fragment?(method_name)
           append_node("...#{resolve_fragment_constant(method_name)}".to_sym, args, &block)
         elsif directive?(method_name)

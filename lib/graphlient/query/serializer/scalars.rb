@@ -3,9 +3,9 @@ module Graphlient
     class Serializer
       module Scalars
         BUILT_IN_SCALAR_TYPES = {
-          int:     'Int',
-          float:   'Float',
-          string:  'String',
+          int: 'Int',
+          float: 'Float',
+          string: 'String',
           boolean: 'Boolean'
         }.freeze
 
