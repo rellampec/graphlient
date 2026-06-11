@@ -16,9 +16,7 @@ warn("There're library changes, but not tests. That's OK as long as you're refac
 # --------------------------------------------------------------------------------------------------------------------
 # You've made changes to specs, but no library code has changed?
 # --------------------------------------------------------------------------------------------------------------------
-if !has_app_changes && has_spec_changes
-  message('We really appreciate pull requests that demonstrate issues, even without a fix. That said, the next step is to try and fix the failing tests!', sticky: false)
-end
+message('We really appreciate pull requests that demonstrate issues, even without a fix. That said, the next step is to try and fix the failing tests!', sticky: false) if !has_app_changes && has_spec_changes
 
 # --------------------------------------------------------------------------------------------------------------------
 # Have you updated CHANGELOG.md?

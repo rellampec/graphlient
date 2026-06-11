@@ -1,7 +1,7 @@
 require_relative 'types/invoice_type'
 
 require_relative 'queries/query'
-require_relative 'types/mutation_type.rb'
+require_relative 'types/mutation_type'
 
 require 'graphql/errors'
 

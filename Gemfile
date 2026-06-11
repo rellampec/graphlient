@@ -12,7 +12,7 @@ end
 
 group :development do
   gem 'byebug', platform: :ruby
-  gem 'rubocop', '0.56.0'
+  gem 'rubocop', '~> 1.0'
 end
 
 group :test do

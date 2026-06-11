@@ -1,22 +1,17 @@
 ### (Next)
 * Your contribution here.
 * [#117](https://github.com/ashkan18/graphlient/pull/117): Migrate Danger to use `danger-pr-comment` reusable workflow, add Ruby 4.0 to CI, fix tests on Ruby 3.4+ and 4.0 - [@dblock](https://github.com/dblock).
-* [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
-* [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the
-    DSL block and returns a `String` without touching the schema or Faraday HTTP adapter.
-    Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named
-    fragment spread. Alternative to the `___Const` convention for use cases where
-    `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
-* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms
-    where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Client#to_query_string(**kargs, &block)`: builds the full GraphQL query document from the DSL block and returns a `String` without touching the schema or Faraday HTTP adapter. Enables DSL-only mode where HTTP dispatch is handled externally - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `Query#spread(fragment_name)`: emits `...FragmentName` into the query string as a named fragment spread. Alternative to the `___Const` convention for use cases where `graphql-client` constant parsing is not available - [@rellampec](https://github.com/rellampec).
+* [#115](https://github.com/ashkan18/graphlient/pull/115): `spec/spec_helper.rb`: rescue `LoadError` on `byebug` require so specs run on platforms where byebug is not installable (e.g. Windows with Ruby 3.2) - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): Directive DSL — `_skip(if: :x)` → `@skip(if: $x)`, `_include(if: :x)` → `@include(if: $x)`. Any `_name` method is treated as a `@name` directive; applies to fields, spreads, and inline fragments - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): `on(:TypeName, *directives, &block)`: inline fragment DSL — `on(:PaidInvoice) { amountPaid }` → `... on PaidInvoice { amountPaid }` - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): `fragment(:Name, on: :Type, &block)`: inline fragment definition appended to the query document automatically; scoped to the query call, no global registry - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): Custom scalar registration — `c.scalar :date, 'Date'` extends the built-in scalar set (`:int`, `:float`, `:string`, `:boolean`) with API-specific types - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): `Query` refactored into `Query::Serializer` composed from concern modules (`Scalars`, `Arguments`, `Evaluator`, `Fragments`, `Directives`). Public API unchanged - [@rellampec](https://github.com/rellampec).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): CI: Ruby 3.4 added to test matrix; Ruby 3.1 WebMock `to_rack` fix; `mutex_m` gem added for Ruby 3.4 stdlib removal - [@rellampec](https://github.com/rellampec).
+* [#113](https://github.com/ashkan18/graphlient/pull/113): Fix CI builds - [@yuki24](https://github.com/yuki24).
+* [#112](https://github.com/ashkan18/graphlient/pull/112): Update graphql-client github repository links in README - [@th1988](https://github.com/th1988).
 
 ### 0.8.0 (2024/01/06)
 * [#110](https://github.com/ashkan18/graphlient/pull/110): Ensure correct Faraday JSON response body parsing with invalid response header - [@taylorthurlow](https://github.com/taylorthurlow).

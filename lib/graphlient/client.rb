@@ -36,6 +36,7 @@ module Graphlient
       # see https://github.com/github-community-projects/graphql-client/pull/132
       # see https://github.com/exAspArk/graphql-errors/issues/2
       raise Graphlient::Errors::ExecutionError, rc if errors_in_result?(rc)
+
       rc
     rescue GraphQL::Client::Error => e
       raise Graphlient::Errors::ClientError, e.message
@@ -81,7 +82,7 @@ module Graphlient
     end
 
     def schema_path
-      return options[:schema_path].to_s if options[:schema_path]
+      options[:schema_path].to_s if options[:schema_path]
     end
 
     def client
