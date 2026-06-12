@@ -88,6 +88,7 @@ module Graphlient
     def client
       @client ||= GraphQL::Client.new(schema: schema.graphql_schema, execute: http).tap do |client|
         client.allow_dynamic_queries = @options.key?(:allow_dynamic_queries) ? options[:allow_dynamic_queries] : true
+        client.allow_named_fragment_access = options[:allow_named_fragment_access] if @options.key?(:allow_named_fragment_access)
       end
     end
 
