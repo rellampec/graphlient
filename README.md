@@ -441,6 +441,28 @@ fragment InvoiceFields on Invoice {
 }
 ```
 
+Because the fragment is defined inline in the same query block, graphql-client treats it
+as part of the same document — all fragment fields are directly accessible on the response
+wrapper with no extra wrapping step:
+
+```ruby
+response = client.query do
+  fragment(:InvoiceFields, on: :Invoice) do
+    id
+    feeInCents
+  end
+
+  query do
+    invoice(id: 10) do
+      spread :InvoiceFields
+    end
+  end
+end
+
+response.data.invoice.id            # 10
+response.data.invoice.fee_in_cents  # 20000
+```
+
 Multiple fragments are supported. Fragments are scoped to the query call — no global
 registry, no cross-contamination between requests.
 
@@ -484,7 +506,12 @@ end
 ```
 
 The wrapped response only allows access to fields that have been explicitly asked for.
-In this example, while `id` has been referenced directly in the main query, `feeInCents` has been spread via fragment and trying to access it in the original wrapped response will throw [`GraphQL::Client::ImplicitlyFetchedFieldError`](https://github.com/github-community-projects/graphql-client/blob/master/guides/implicitly-fetched-field-error.md) (to prevent data leaks between components).
+In this example, while `id` has been referenced directly in the main query, `feeInCents`
+has been spread via an **external fragment constant** and trying to access it in the
+original wrapped response will throw
+[`GraphQL::Client::ImplicitlyFetchedFieldError`](https://github.com/github-community-projects/graphql-client/blob/master/guides/implicitly-fetched-field-error.md).
+This is graphql-client's component-isolation mechanism: each fragment constant "owns" the
+fields it declares, preventing accidental data access across component boundaries.
 
 ```ruby
 response = client.execute(invoice_query)
@@ -506,6 +533,11 @@ invoice.id
 invoice.fee_in_cents
 # 20000
 ```
+
+> **Note:** This component-isolation behaviour only applies to external fragment constants
+> (the `___` / `__` pattern). Fragments defined inline via the `fragment` DSL in the same
+> query block are not subject to this restriction — their fields are accessible directly
+> on the operation response (see [Fragment Spreads and Definitions in the DSL](#fragment-spreads-and-definitions-in-the-dsl)).
 
 ### Inline Fragments in the DSL
 
