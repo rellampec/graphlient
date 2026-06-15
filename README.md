@@ -541,17 +541,18 @@ invoice.fee_in_cents
 
 ### Inline Fragments in the DSL
 
-Use `on(:TypeName)` for inline fragments (`... on Type { }`), useful for union
-types and interface implementations:
+Use `spread(on: :TypeName)` for inline fragments (`... on Type { }`), useful for union
+types and interface implementations. It's the same `spread` verb as named fragment
+spreads, and the same `on:` keyword as `fragment(name, on:)`:
 
 ```ruby
 client.query do
   query do
     invoice(id: 10) do
-      on(:PaidInvoice) do
+      spread(on: :PaidInvoice) do
         amountPaid
       end
-      on(:UnpaidInvoice) do
+      spread(on: :UnpaidInvoice) do
         amountDue
       end
     end
@@ -577,7 +578,7 @@ query {
 Directives can be applied to inline fragments too (see [Directives in the DSL](#directives-in-the-dsl)):
 
 ```ruby
-on(:DraftInvoice, _skip(if: :skip_drafts)) { draftId }
+spread(_skip(if: :skip_drafts), on: :DraftInvoice) { draftId }
 # → ... on DraftInvoice @skip(if: $skip_drafts) { draftId }
 ```
 
@@ -610,7 +611,7 @@ spread :InvoiceFields, _skip(if: :skip_invoice)
 **On an inline fragment:**
 
 ```ruby
-on(:DraftInvoice, _skip(if: :skip_drafts)) { draftId }
+spread(_skip(if: :skip_drafts), on: :DraftInvoice) { draftId }
 # → ... on DraftInvoice @skip(if: $skip_drafts) { draftId }
 ```
 

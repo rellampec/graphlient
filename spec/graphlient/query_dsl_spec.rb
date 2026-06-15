@@ -92,15 +92,17 @@ RSpec.describe Graphlient::Query do
 
   # --- Inline fragments ----------------------------------------------------
 
-  describe 'on(:Type) — inline fragment' do
+  # Inline fragments use the same `spread` verb as named fragment spreads, with the
+  # `on:` keyword (the same keyword as `fragment(name, on:)`) — one consistent entry point.
+  describe 'spread(on: :Type) — inline fragment' do
     it 'generates ... on Type { }' do
       result = build do
         query do
           invoice(id: 10) do
-            on(:PaidInvoice) do
+            spread(on: :PaidInvoice) do
               amountPaid
             end
-            on(:UnpaidInvoice) do
+            spread(on: :UnpaidInvoice) do
               amountDue
             end
           end
@@ -116,7 +118,7 @@ RSpec.describe Graphlient::Query do
       result = build do
         query(skip_draft: :boolean!) do
           invoice(id: 10) do
-            on(:DraftInvoice, _skip(if: :skip_draft)) do
+            spread(_skip(if: :skip_draft), on: :DraftInvoice) do
               draftId
             end
           end
@@ -126,11 +128,25 @@ RSpec.describe Graphlient::Query do
       expect(result).to include('draftId')
     end
 
-    it 'inline fragment without block (type check only)' do
+    it 'inline fragment without block (bare type condition)' do
       result = build do
-        query { on(:Invoice) }
+        query { spread(on: :Invoice) }
       end
       expect(result).to include('... on Invoice')
+    end
+  end
+
+  # --- spread argument validation -----------------------------------------
+
+  describe 'spread requires a name or an inline type condition' do
+    it 'raises when given neither a fragment name nor on:' do
+      expect { build { query { spread } } }
+        .to raise_error(Graphlient::Errors::Error, /requires a fragment name/)
+    end
+
+    it 'raises when a named spread is given a block' do
+      expect { build { query { spread(:InvoiceFields) { id } } } }
+        .to raise_error(Graphlient::Errors::Error, /takes no block/)
     end
   end
 

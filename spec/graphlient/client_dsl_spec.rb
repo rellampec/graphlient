@@ -111,7 +111,7 @@ describe Graphlient::Client do
       result = client.to_query_string do
         query do
           invoice(id: 10) do
-            on(:PaidInvoice) { amountPaid }
+            spread(on: :PaidInvoice) { amountPaid }
           end
         end
       end

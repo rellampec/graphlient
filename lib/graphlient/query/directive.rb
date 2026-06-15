@@ -14,7 +14,7 @@ module Graphlient
     #   spread :InvoiceFields, _skip(if: :x)
     #   -> ...InvoiceFields @skip(if: $x)
     #
-    #   on(:DraftInvoice, _skip(if: :x)) { draft_id }
+    #   spread(_skip(if: :x), on: :DraftInvoice) { draft_id }
     #   -> ... on DraftInvoice @skip(if: $x) { draftId }
     class Directive
       attr_reader :name, :args

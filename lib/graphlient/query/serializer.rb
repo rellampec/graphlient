@@ -1,3 +1,4 @@
+require_relative '../errors/error'
 require_relative 'directive'
 require_relative 'serializer/scalars'
 require_relative 'serializer/arguments'
@@ -42,29 +43,49 @@ module Graphlient
         parts.join("\n\n")
       end
 
+      # Raised when `spread` is called with neither a fragment name nor `on:`.
+      SPREAD_REQUIRES_NAME_OR_ON =
+        'spread requires a fragment name (`spread :InvoiceFields`) or an inline ' \
+        'type condition (`spread on: :PaidInvoice { ... }`).'
+      # Raised when a named spread is given a block (a named spread has no selection set).
+      SPREAD_NAME_TAKES_NO_BLOCK =
+        'a named fragment spread takes no block; for an inline fragment use ' \
+        '`spread on: :Type { ... }`.'
+
+      # Fragment spread OR inline fragment -- one consistent entry point.
+      #
       # Named fragment spread: ...FragmentName [@directive ...]
       #   spread :InvoiceFields
-      #   spread :InvoiceFields, _skip(if: :x)   # -> ...InvoiceFields @skip(if: $x)
-      def spread(fragment_name, *args)
+      #   spread :InvoiceFields, _skip(if: :x)          # -> ...InvoiceFields @skip(if: $x)
+      #
+      # Inline fragment / type condition: ... on Type [@directive ...] { fields }
+      #   spread on: :PaidInvoice { amount_paid }       # -> ... on PaidInvoice { amountPaid }
+      #   spread on: :DraftInvoice, _skip(if: :skip) { draft_id }
+      #   spread on: :Invoice                           # bare type condition, no block
+      #
+      # A single verb covers both GraphQL forms; `on:` is the same keyword used by
+      # `fragment(name, on:)`, keeping the DSL consistent (and leaving room for a future
+      # `spread(:X).skip(...)` chaining form without a breaking change).
+      def spread(*args, on: nil, &block)
         directives = args.select { |a| a.is_a?(Directive) }
-        @query_str << "\n#{indent}...#{fragment_name}"
-        directives.each { |d| @query_str << " #{d}" }
-        @query_str << "\n#{indent}"
-      end
 
-      # Inline fragment: ... on Type [@directive ...] { fields }
-      #   on(:PaidInvoice) { amount_paid }
-      #   on(:DraftInvoice, _skip(if: :skip)) { draft_id }
-      def on(type, *args, &block)
-        directives = args.select { |a| a.is_a?(Directive) }
-        @query_str << "\n#{indent}... on #{type}"
-        directives.each { |d| @query_str << " #{d}" }
-        if block_given?
-          @indents += 1
-          @query_str << '{'
-          evaluate(&block)
-          @query_str << '}'
-          @indents -= 1
+        if on
+          @query_str << "\n#{indent}... on #{on}"
+          directives.each { |d| @query_str << " #{d}" }
+          if block
+            @indents += 1
+            @query_str << '{'
+            evaluate(&block)
+            @query_str << '}'
+            @indents -= 1
+          end
+        else
+          fragment_name = args.find { |a| !a.is_a?(Directive) }
+          raise Graphlient::Errors::Error, SPREAD_REQUIRES_NAME_OR_ON if fragment_name.nil?
+          raise Graphlient::Errors::Error, SPREAD_NAME_TAKES_NO_BLOCK if block
+
+          @query_str << "\n#{indent}...#{fragment_name}"
+          directives.each { |d| @query_str << " #{d}" }
         end
         @query_str << "\n#{indent}"
       end
