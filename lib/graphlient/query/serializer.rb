@@ -46,11 +46,11 @@ module Graphlient
       # Raised when `spread` is called with neither a fragment name nor `on:`.
       SPREAD_REQUIRES_NAME_OR_ON =
         'spread requires a fragment name (`spread :InvoiceFields`) or an inline ' \
-        'type condition (`spread on: :PaidInvoice { ... }`).'
+        'type condition (`spread on: :PaidInvoice { ... }`).'.freeze
       # Raised when a named spread is given a block (a named spread has no selection set).
       SPREAD_NAME_TAKES_NO_BLOCK =
         'a named fragment spread takes no block; for an inline fragment use ' \
-        '`spread on: :Type { ... }`.'
+        '`spread on: :Type { ... }`.'.freeze
 
       # Fragment spread OR inline fragment -- one consistent entry point.
       #
@@ -68,24 +68,10 @@ module Graphlient
       # `spread(:X).skip(...)` chaining form without a breaking change).
       def spread(*args, on: nil, &block)
         directives = args.select { |a| a.is_a?(Directive) }
-
         if on
-          @query_str << "\n#{indent}... on #{on}"
-          directives.each { |d| @query_str << " #{d}" }
-          if block
-            @indents += 1
-            @query_str << '{'
-            evaluate(&block)
-            @query_str << '}'
-            @indents -= 1
-          end
+          append_inline_fragment(on, directives, &block)
         else
-          fragment_name = args.find { |a| !a.is_a?(Directive) }
-          raise Graphlient::Errors::Error, SPREAD_REQUIRES_NAME_OR_ON if fragment_name.nil?
-          raise Graphlient::Errors::Error, SPREAD_NAME_TAKES_NO_BLOCK if block
-
-          @query_str << "\n#{indent}...#{fragment_name}"
-          directives.each { |d| @query_str << " #{d}" }
+          append_named_spread(args, directives, &block)
         end
         @query_str << "\n#{indent}"
       end
@@ -115,6 +101,29 @@ module Graphlient
 
       def indent
         '  ' * @indents
+      end
+
+      # Inline fragment / type condition: ... on Type [@directive ...] [{ fields }]
+      def append_inline_fragment(type, directives, &block)
+        @query_str << "\n#{indent}... on #{type}"
+        directives.each { |d| @query_str << " #{d}" }
+        return unless block
+
+        @indents += 1
+        @query_str << '{'
+        evaluate(&block)
+        @query_str << '}'
+        @indents -= 1
+      end
+
+      # Named fragment spread: ...FragmentName [@directive ...]
+      def append_named_spread(args, directives, &block)
+        fragment_name = args.find { |a| !a.is_a?(Directive) }
+        raise Graphlient::Errors::Error, SPREAD_REQUIRES_NAME_OR_ON if fragment_name.nil?
+        raise Graphlient::Errors::Error, SPREAD_NAME_TAKES_NO_BLOCK if block
+
+        @query_str << "\n#{indent}...#{fragment_name}"
+        directives.each { |d| @query_str << " #{d}" }
       end
 
       def append_node(node, args, arg_processor: nil, &block)
