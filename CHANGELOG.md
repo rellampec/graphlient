@@ -1,5 +1,7 @@
 ### (Next)
 * Your contribution here.
+
+### 0.9.0 (2026/08/03)
 * [#118](https://github.com/ashkan18/graphlient/pull/118): Correct `TimeoutError` inheritance and rescue documentation - [@oiahoon](https://github.com/oiahoon).
 * [#117](https://github.com/ashkan18/graphlient/pull/117): Migrate Danger to use `danger-pr-comment` reusable workflow, add Ruby 4.0 to CI, fix tests on Ruby 3.4+ and 4.0 - [@dblock](https://github.com/dblock).
 * [#116](https://github.com/ashkan18/graphlient/pull/116): Directive DSL — `_skip(if: :x)` → `@skip(if: $x)`, `_include(if: :x)` → `@include(if: $x)`. Any `_name` method is treated as a `@name` directive; applies to fields, spreads, and inline fragments - [@rellampec](https://github.com/rellampec).
