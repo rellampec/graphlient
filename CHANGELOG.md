@@ -1,4 +1,5 @@
 ### (Next)
+* [#121](https://github.com/ashkan18/graphlient/pull/121): Fix `Graphlient::Errors::ClientError` dropping the original `GraphQL::Client::Error` when wrapping errors from `#parse` and `#execute`, losing `inner_exception` and the source location `graphql-client` sets on the backtrace - [@rellampec](https://github.com/rellampec).
 * Your contribution here.
 
 ### 0.9.0 (2026/08/03)

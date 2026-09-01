@@ -229,6 +229,16 @@ describe Graphlient::Client do
           expect(e.to_s).to eq "Field 'invoices' doesn't exist on type 'Query'"
         end
       end
+
+      it 'preserves the original graphql-client error as inner_exception via #execute' do
+        expect do
+          client.execute(query, some_id: 'NASDASASD')
+        end.to raise_error Graphlient::Errors::ClientError do |e|
+          expect(e.inner_exception).to be_a GraphQL::Client::Error
+          expect(e.inner_exception.message).to eq e.message
+          expect(e.inner_exception.backtrace.first).to match(%r{lib/graphlient/client\.rb:\d+})
+        end
+      end
     end
   end
 
@@ -246,6 +256,23 @@ describe Graphlient::Client do
           end
         end.to raise_error Graphlient::Errors::ClientError do |e|
           expect(e.to_s).to eq "Field 'invoices' doesn't exist on type 'Query'"
+        end
+      end
+
+      it 'preserves the original graphql-client error as inner_exception via #parse' do
+        expect do
+          client.parse do
+            query do
+              invoices(id: 10) do
+                id
+                feeInCents
+              end
+            end
+          end
+        end.to raise_error Graphlient::Errors::ClientError do |e|
+          expect(e.inner_exception).to be_a GraphQL::Client::Error
+          expect(e.inner_exception.message).to eq e.message
+          expect(e.inner_exception.backtrace.first).to match(%r{lib/graphlient/client\.rb:\d+})
         end
       end
 

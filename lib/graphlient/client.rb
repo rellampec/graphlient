@@ -17,7 +17,7 @@ module Graphlient
       end
       client.parse(query_str.to_s)
     rescue GraphQL::Client::Error => e
-      raise Graphlient::Errors::ClientError, e.message
+      raise Graphlient::Errors::ClientError.new(e.message, e)
     end
 
     def to_query_string(**_kargs, &block)
@@ -39,7 +39,7 @@ module Graphlient
 
       rc
     rescue GraphQL::Client::Error => e
-      raise Graphlient::Errors::ClientError, e.message
+      raise Graphlient::Errors::ClientError.new(e.message, e)
     end
 
     def query(query_or_variables = nil, variables = nil, &block)
